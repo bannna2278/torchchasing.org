@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1>Staff Login Portal</h1>
+<p>Please enter your authorized staff credentials.</p>
+<button id="loginBtn">Staff Sign In</button>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDe06CCbykf6zYHLwF71ngIDMwQZGmiaVI",
+    authDomain: "torch-staff-portal.firebaseapp.com",
+    projectId: "torch-staff-portal"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  document.getElementById('loginBtn').addEventListener('click', () => {
+    // 1. Ask for the email
+    const email = prompt("Enter staff email (e.g., name@torchchasing.org):");
+    
+    // 2. Security Check: Ensure it's the right domain before even trying to log in
+    if (!email || !email.toLowerCase().endsWith("@torchchasing.org")) {
+      alert("Access Denied: You must use an authorized @torchchasing.org email.");
+      return;
+    }
+
+    // 3. Ask for the password
+    const password = prompt("Enter your password:");
+
+    if (password) {
+      // 4. Verify with Firebase
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          // Success! Move to the staff page
+          window.location.href = "staff.html"; 
+        })
+        .catch((error) => {
+          alert("Login failed: Incorrect email or password.");
+          console.error(error.code);
+        });
+    }
+  });
+</script>
+</head>
+<body>
+    <h1>Welcome to the Staff Portal</h1>
+    <p>This page is protected and only visible to logged-in staff members.</p>
+</body>
+</html>

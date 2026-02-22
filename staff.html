@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Portal</title>
+    
+    <style>
+  /* Keeps the page invisible while we check who the user is */
+  body { display: none; } 
+</style>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDe06CCbykf6zYHLwF71ngIDMwQZGmiaVI",
+    authDomain: "torch-staff-portal.firebaseapp.com",
+    projectId: "torch-staff-portal"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.email.endsWith("@torchchasing.org")) {
+      // Valid staff member
+      document.body.style.display = "block";
+    } else {
+      // Not logged in or not staff
+      window.location.href = "login.html"; 
+    }
+  });
+</script>
+</head>
+<body>
+  <h1>Welcome to the Staff Portal</h1>
+  <p>This page is protected and only visible to logged-in staff members.</p>
+</body>
+</html>
